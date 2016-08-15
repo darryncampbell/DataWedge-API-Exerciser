@@ -1,10 +1,19 @@
 <resources>
     <string name="app_name">Datawedge Exerciser</string>
+    <string name="app_name_long">Datawedge API Exerciser</string>
     <string name="action_settings">Settings</string>
+    <string name="softScanTriggerOptionsStartScanning">START_SCANNING</string>
+    <string name="softScanTriggerOptionsStopScanning">STOP_SCANNING</string>
+    <string name="softScanTriggerOptionsToggleScanning">TOGGLE_SCANNING</string>
+    <string name="activity_intent_filter_action">com.zebra.dwapiexerciser.ACTION</string>
+    <string name="activity_action_from_service">com.zebra.dwapiexerciser.service.ACTION</string>
+    <string name="datawedge_intent_key_source">com.symbol.datawedge.source</string>
+    <string name="datawedge_intent_key_label_type">com.symbol.datawedge.label_type</string>
+    <string name="datawedge_intent_key_data">com.symbol.datawedge.data_string</string>
 
     <string-array name="softscanTriggerOptions">
-        <item>START_SCANNING</item>
-        <item>STOP_SCANNING</item>
-        <item>TOGGLE_SCANNING</item>
+        <item>@string/softScanTriggerOptionsStartScanning</item>
+        <item>@string/softScanTriggerOptionsStopScanning</item>
+        <item>@string/softScanTriggerOptionsToggleScanning</item>
     </string-array>
 </resources>
