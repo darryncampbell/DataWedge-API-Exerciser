@@ -130,8 +130,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
 
-
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        unregisterReceiver(myBroadcastReceiver);
     }
 
     private BroadcastReceiver myBroadcastReceiver = new BroadcastReceiver() {
