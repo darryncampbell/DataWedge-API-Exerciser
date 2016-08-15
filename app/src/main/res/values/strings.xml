@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Datawedge Exerciser</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="softscanTriggerOptions">
+        <item>START_SCANNING</item>
+        <item>STOP_SCANNING</item>
+        <item>TOGGLE_SCANNING</item>
+    </string-array>
+</resources>
