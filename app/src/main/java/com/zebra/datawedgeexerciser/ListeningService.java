@@ -2,12 +2,6 @@ package com.zebra.datawedgeexerciser;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
-import android.util.Log;
-import android.widget.Toast;
 
 /**
  * Created by darry on 15/08/2016.
