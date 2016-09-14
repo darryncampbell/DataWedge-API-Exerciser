@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //  Send SoftScanTriggerIntent
                 sendDataWedgeIntentWithExtra(ACTION_SOFTSCANTRIGGER, EXTRA_PARAMETER, spinnerSoftScanTrigger.getSelectedItem().toString());
+
             }
         });
 
