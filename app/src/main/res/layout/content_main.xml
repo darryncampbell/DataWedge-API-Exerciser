@@ -333,6 +333,70 @@
 
                 </TableRow>
 
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="GetActiveProfile (>= 6.2)"
+                            android:id="@+id/txtGetActiveProfile" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnGetActiveProfile"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp" />
+
+
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="GetProfilesList (>= 6.2)"
+                            android:id="@+id/txtGetProfilesList" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnGetProfilesList"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp" />
+
+
+                </TableRow>
 
             </TableLayout>
         </LinearLayout>

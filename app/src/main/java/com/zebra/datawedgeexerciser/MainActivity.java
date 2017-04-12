@@ -28,10 +28,20 @@ public class MainActivity extends AppCompatActivity {
     //  Parameters associated with the application actions
     private static final String EXTRA_PARAMETER = "com.symbol.datawedge.api.EXTRA_PARAMETER";
     private static final String EXTRA_PROFILENAME = "com.symbol.datawedge.api.EXTRA_PROFILENAME";
+    private static final String EXTRA_GET_ACTIVE_PROFILE = "com.symbol.datawedge.api.GET_ACTIVE_PROFILE";
+    private static final String EXTRA_GET_PROFILES_LIST = "com.symbol.datawedge.api.GET_PROFILES_LIST";
+    private static final String EXTRA_EMPTY = "";
 
     //  Enumerated Scanner receiver
     private static final String ACTION_ENUMERATEDLISET = "com.symbol.datawedge.api.ACTION_ENUMERATEDSCANNERLIST";
     private static final String KEY_ENUMERATEDSCANNERLIST = "DWAPI_KEY_ENUMERATEDSCANNERLIST";
+
+    //  DataWedge 6.2 API
+    private static final String ACTION_DATAWEDGE_FROM_6_2 = "com.symbol.datawedge.api.ACTION";
+
+    //  Extra Parameter results (from 6.2 onwards)
+    private static final String EXTRA_RESULT_GET_ACTIVE_PROFILE = "com.symbol.datawedge.api.RESULT_GET_ACTIVE_PROFILE";
+    private static final String EXTRA_RESULT_GET_PROFILE_LIST = "com.symbol.datawedge.api.RESULT_ACTIVE_PROFILE";
 
     private static final String LOG_TAG = "Datawedge API Exerciser";
 
@@ -94,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
         //  Whilst we're here also register to receive broadcasts via DataWedge scanning
         filter.addAction(getResources().getString(R.string.activity_intent_filter_action));
         filter.addAction(getResources().getString(R.string.activity_action_from_service));
+        filter.addAction(EXTRA_RESULT_GET_ACTIVE_PROFILE);
+        filter.addAction(EXTRA_RESULT_GET_PROFILE_LIST);
         registerReceiver(myBroadcastReceiver, filter);
 
         //  SetDefaultProfile
@@ -121,6 +133,42 @@ public class MainActivity extends AppCompatActivity {
         btnSwitchToProfile.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 sendDataWedgeIntentWithExtra(ACTION_SWITCHTOPROFILE, EXTRA_PROFILENAME, editSwitchToProfile.getText().toString());
+            }
+        });
+
+        //  GetActiveProfile
+        final Button btnGetActiveProfile = (Button) findViewById(R.id.btnGetActiveProfile);
+        btnGetActiveProfile.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_GET_ACTIVE_PROFILE, EXTRA_EMPTY);
+                Bundle bundle = getIntent().getExtras();
+                if (bundle != null) {
+                    for (String key : bundle.keySet()) {
+                        Object value = bundle.get(key);
+                        Log.d(LOG_TAG, String.format("%s %s (%s)", key,
+                                value.toString(), value.getClass().getName()));
+                    }
+                }
+            }
+        });
+
+        //  GetProfilesList
+        final Button btnGetProfilesList = (Button) findViewById(R.id.btnGetProfilesList);
+        btnGetProfilesList.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_GET_PROFILES_LIST, EXTRA_EMPTY);
+                Bundle bundle = getIntent().getExtras();
+                if (bundle != null) {
+                    for (String key : bundle.keySet()) {
+                        Object value = bundle.get(key);
+                        Log.d(LOG_TAG, String.format("%s %s (%s)", key,
+                                value.toString(), value.getClass().getName()));
+                    }
+                }
             }
         });
 
@@ -170,6 +218,29 @@ public class MainActivity extends AppCompatActivity {
                 catch (Exception e)
                 {
                     //  Catch if the UI does not exist when we receive the broadcast... this is not designed to be a production app
+                }
+            }
+            //  TODO: HOW ARE THE 6.2 RETURN VALUES RECEIVED?
+            else if (action.equals(EXTRA_RESULT_GET_ACTIVE_PROFILE) || action.equals(EXTRA_RESULT_GET_PROFILE_LIST))
+            {
+                Bundle bundle = intent.getExtras();
+                if (bundle != null) {
+                    for (String key : bundle.keySet()) {
+                        Object value = bundle.get(key);
+                        Log.d(LOG_TAG, String.format("%s %s (%s)", key,
+                                value.toString(), value.getClass().getName()));
+                    }
+                }
+                if (intent.hasExtra(EXTRA_GET_ACTIVE_PROFILE))
+                {
+                    Toast.makeText(getApplicationContext(), intent.getStringExtra(EXTRA_GET_ACTIVE_PROFILE), Toast.LENGTH_LONG).show();
+                }
+                else if (intent.hasExtra(EXTRA_GET_PROFILES_LIST))
+                {
+                    String[] profilesList = intent.getStringArrayExtra(EXTRA_GET_PROFILES_LIST);
+                    int i = 0;
+
+                    i++;
                 }
             }
         }
