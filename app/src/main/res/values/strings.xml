@@ -5,15 +5,32 @@
     <string name="softScanTriggerOptionsStartScanning">START_SCANNING</string>
     <string name="softScanTriggerOptionsStopScanning">STOP_SCANNING</string>
     <string name="softScanTriggerOptionsToggleScanning">TOGGLE_SCANNING</string>
+    <string name="emptyProfileList">Device does not support GET_PROFILES_LIST</string>
     <string name="activity_intent_filter_action">com.zebra.dwapiexerciser.ACTION</string>
     <string name="activity_action_from_service">com.zebra.dwapiexerciser.service.ACTION</string>
     <string name="datawedge_intent_key_source">com.symbol.datawedge.source</string>
     <string name="datawedge_intent_key_label_type">com.symbol.datawedge.label_type</string>
     <string name="datawedge_intent_key_data">com.symbol.datawedge.data_string</string>
+    <string name="command_refresh_ui">Refresh UI</string>
+    <string name="command_delete_profile">Delete Profile</string>
+    <string name="command_clone_profile">Clone Profile</string>
+    <string name="command_rename_profile">Rename Profile</string>
 
     <string-array name="softscanTriggerOptions">
         <item>@string/softScanTriggerOptionsStartScanning</item>
         <item>@string/softScanTriggerOptionsStopScanning</item>
         <item>@string/softScanTriggerOptionsToggleScanning</item>
     </string-array>
+
+    <string-array name="profileList">
+        <item>@string/emptyProfileList</item>
+    </string-array>
+
+    <string-array name="profileCommandList">
+        <item>@string/command_refresh_ui</item>
+        <item>@string/command_delete_profile</item>
+        <item>@string/command_clone_profile</item>
+        <item>@string/command_rename_profile</item>
+    </string-array>
+
 </resources>

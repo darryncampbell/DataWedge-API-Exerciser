@@ -107,6 +107,33 @@
                 android:layout_height="match_parent"
                 android:stretchColumns="1">
 
+<!--  6.x APIs -->
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="DataWedge 6.x APIs"
+                            android:id="@+id/txtHeading6.x" />
+
+                    </LinearLayout>
+
+
+                </TableRow>
+
+
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -147,6 +174,9 @@
 
                 </TableRow>
 
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
 
                 <TableRow
                     android:layout_width="fill_parent"
@@ -187,6 +217,10 @@
 
                 </TableRow>
 
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -219,6 +253,10 @@
                         android:paddingRight="10dp" />
 
                 </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -260,6 +298,10 @@
 
                 </TableRow>
 
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -292,6 +334,10 @@
                         android:paddingRight="10dp" />
 
                 </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -333,6 +379,108 @@
 
                 </TableRow>
 
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <!--  6.2 APIs -->
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="DataWedge 6.2 APIs"
+                            android:id="@+id/txtHeading6.2" />
+
+                    </LinearLayout>
+
+                </TableRow>
+
+                <!--  New functionality in 6.2 APIs -->
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Active Profile (Refresh UI if unexpected)"
+                            android:id="@+id/txtActiveProfile62" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="YOUR DEVICE DOES NOT SUPPORT DATAWEDGE 6.2 APIs"
+                            android:id="@+id/txtActiveProfileOutput62" />
+
+                    </LinearLayout>
+
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Select Profile"
+                            android:id="@+id/txtSelectProfile62" />
+
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/spinnerSelectProfile62"
+                            android:entries="@array/profileList"
+                            android:paddingRight="10dp"
+                            />
+
+                    </LinearLayout>
+
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -348,9 +496,34 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:text="GetActiveProfile (>= 6.2)"
-                            android:id="@+id/txtGetActiveProfile" />
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Select Command"
+                            android:id="@+id/txtSelectCommand62" />
+
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/spinnerSelectCommand62"
+                            android:entries="@array/profileCommandList"
+                            android:paddingRight="10dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="New Name"
+                            android:id="@+id/txtProfileCommandParameter"
+                            android:enabled="false"
+                            />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/editProfileCommandParameter"
+                            android:text="profile name"
+                            android:enabled="false"
+                            />
 
                     </LinearLayout>
 
@@ -358,15 +531,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Send"
-                        android:id="@+id/btnGetActiveProfile"
+                        android:id="@+id/btnProfileCommand62"
                         android:background="@color/zebraBlue"
                         android:textColor="@color/zebraWhite"
-                        android:paddingRight="10dp" />
-
+                        android:paddingRight="10dp"
+                        android:layout_gravity="center"
+                        />
 
                 </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
                 <TableRow
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="match_parent"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp">
@@ -380,9 +559,17 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:text="GetProfilesList (>= 6.2)"
-                            android:id="@+id/txtGetProfilesList" />
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Disable / Enable DataWedge"
+                            android:id="@+id/txtDisableEnableDataWedge" />
+
+                        <CheckBox
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/checkDisableEnableDataWedge"
+                            android:layout_gravity="center_vertical|right"
+                            android:text="Enable DataWedge?"
+                            android:checked="true"/>
 
                     </LinearLayout>
 
@@ -390,14 +577,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Send"
-                        android:id="@+id/btnGetProfilesList"
+                        android:id="@+id/btnDisableEnableDataWedge"
                         android:background="@color/zebraBlue"
                         android:textColor="@color/zebraWhite"
                         android:paddingRight="10dp" />
 
-
                 </TableRow>
 
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
             </TableLayout>
         </LinearLayout>
     </ScrollView>
