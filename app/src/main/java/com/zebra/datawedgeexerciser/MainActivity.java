@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,37 +19,73 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
-    //  6.x API
+    //  6.0 API and up Actions sent to DataWedge
     private static final String ACTION_SOFTSCANTRIGGER = "com.symbol.datawedge.api.ACTION_SOFTSCANTRIGGER";
     private static final String ACTION_SCANNERINPUTPLUGIN = "com.symbol.datawedge.api.ACTION_SCANNERINPUTPLUGIN";
     private static final String ACTION_ENUMERATESCANNERS = "com.symbol.datawedge.api.ACTION_ENUMERATESCANNERS";
     private static final String ACTION_SETDEFAULTPROFILE = "com.symbol.datawedge.api.ACTION_SETDEFAULTPROFILE";
     private static final String ACTION_RESETDEFAULTPROFILE = "com.symbol.datawedge.api.ACTION_RESETDEFAULTPROFILE";
     private static final String ACTION_SWITCHTOPROFILE = "com.symbol.datawedge.api.ACTION_SWITCHTOPROFILE";
-    //  Intent Extras (DataWedge 6.x)
+    //  6.0 API and up Extras sent to DataWedge
     private static final String EXTRA_PARAMETER = "com.symbol.datawedge.api.EXTRA_PARAMETER";
     private static final String EXTRA_PROFILENAME = "com.symbol.datawedge.api.EXTRA_PROFILENAME";
-    //  Enumerated Scanner receiver
+    //  6.0 API and up Actions received from DataWedge
     private static final String ACTION_ENUMERATEDLIST = "com.symbol.datawedge.api.ACTION_ENUMERATEDSCANNERLIST";
+    //  6.0 API and up Extras received from DataWedge
     private static final String KEY_ENUMERATEDSCANNERLIST = "DWAPI_KEY_ENUMERATEDSCANNERLIST";
 
-    //  DataWedge 6.2 API
+    //  6.2 API and up Actions sent to DataWedge
     private static final String ACTION_DATAWEDGE_FROM_6_2 = "com.symbol.datawedge.api.ACTION";
-    private static final String ACTION_RESULT_DATAWEDGE_FROM_6_2 = "com.symbol.datawedge.api.RESULT_ACTION";
-    //  Intent Extras (DataWedge 6.2)
+    //  6.2 API and up Extras sent to DataWedge
     private static final String EXTRA_GET_ACTIVE_PROFILE = "com.symbol.datawedge.api.GET_ACTIVE_PROFILE";
     private static final String EXTRA_GET_PROFILES_LIST = "com.symbol.datawedge.api.GET_PROFILES_LIST";
-    private static final String EXTRA_EMPTY = "";
     private static final String EXTRA_DELETE_PROFILE = "com.symbol.datawedge.api.DELETE_PROFILE";
     private static final String EXTRA_CLONE_PROFILE = "com.symbol.datawedge.api.CLONE_PROFILE";
     private static final String EXTRA_RENAME_PROFILE = "com.symbol.datawedge.api.RENAME_PROFILE";
     private static final String EXTRA_ENABLE_DATAWEDGE = "com.symbol.datawedge.api.ENABLE_DATAWEDGE";
-    //  Extra Parameter results (from 6.2 onwards)
+    private static final String EXTRA_EMPTY = "";
+    //  6.2 API and up Actions received from DataWedge
+    private static final String ACTION_RESULT_DATAWEDGE_FROM_6_2 = "com.symbol.datawedge.api.RESULT_ACTION";
+    //  6.2 API and up Extras received from DataWedge
     private static final String EXTRA_RESULT_GET_ACTIVE_PROFILE = "com.symbol.datawedge.api.RESULT_GET_ACTIVE_PROFILE";
     private static final String EXTRA_RESULT_GET_PROFILE_LIST = "com.symbol.datawedge.api.RESULT_GET_PROFILES_LIST";
 
+    //  6.3 API and up Extras sent to DataWedge
+    private static final String EXTRA_SOFTSCANTRIGGER_FROM_6_3 = "com.symbol.datawedge.api.SOFT_SCAN_TRIGGER";
+    private static final String EXTRA_SCANNERINPUTPLUGIN_FROM_6_3 = "com.symbol.datawedge.api.SCANNER_INPUT_PLUGIN";
+    private static final String EXTRA_ENUMERATESCANNERS_FROM_6_3 = "com.symbol.datawedge.api.ENUMERATE_SCANNERS";
+    private static final String EXTRA_SETDEFAULTPROFILE_FROM_6_3 = "com.symbol.datawedge.api.SET_DEFAULT_PROFILE";
+    private static final String EXTRA_RESETDEFAULTPROFILE_FROM_6_3 = "com.symbol.datawedge.api.RESET_DEFAULT_PROFILE";
+    private static final String EXTRA_SWITCHTOPROFILE_FROM_6_3 = "com.symbol.datawedge.api.SWITCH_TO_PROFILE";
+    private static final String EXTRA_GET_VERSION_INFO = "com.symbol.datawedge.api.GET_VERSION_INFO";
+    private static final String EXTRA_REGISTER_NOTIFICATION = "com.symbol.datawedge.api.REGISTER_FOR_NOTIFICATION";
+    private static final String EXTRA_UNREGISTER_NOTIFICATION = "com.symbol.datawedge.api.UNREGISTER_FOR_NOTIFICATION";
+    private static final String EXTRA_CREATE_PROFILE = "com.symbol.datawedge.api.CREATE_PROFILE";
+    private static final String EXTRA_SET_CONFIG = "com.symbol.datawedge.api.SET_CONFIG";
+    private static final String EXTRA_RESTORE_CONFIG = "com.symbol.datawedge.api.RESTORE_CONFIG";
+    //  6.3 API and up Actions received from DataWedge
+    private static final String ACTION_RESULT_NOTIFICATION = "com.symbol.datawedge.api.NOTIFICATION_ACTION";
+    //  6.3 API and up Extras received from DataWedge
+    private static final String EXTRA_RESULT_GET_VERSION_INFO = "com.symbol.datawedge.api.RESULT_GET_VERSION_INFO";
+    private static final String EXTRA_RESULT_NOTIFICATION = "com.symbol.datawedge.api.NOTIFICATION";
+    private static final String EXTRA_RESULT_ENUMERATE_SCANNERS = "com.symbol.datawedge.api.RESULT_ENUMERATE_SCANNERS";
+    //  6.3 API and up Parameter keys and values associated with extras received from DataWedge
+    private static final String EXTRA_KEY_APPLICATION_NAME = "com.symbol.datawedge.api.APPLICATION_NAME";
+    private static final String EXTRA_KEY_NOTIFICATION_TYPE = "com.symbol.datawedge.api.NOTIFICATION_TYPE";
+    private static final String EXTRA_RESULT_NOTIFICATION_TYPE = "NOTIFICATION_TYPE";
+    private static final String EXTRA_KEY_VALUE_SCANNER_STATUS = "SCANNER_STATUS";
+    private static final String EXTRA_KEY_VALUE_PROFILE_SWITCH = "PROFILE_SWITCH";
+    private static final String EXTRA_KEY_VALUE_CONFIGURATION_UPDATE = "CONFIGURATION_UPDATE";
+    private static final String EXTRA_KEY_VALUE_NOTIFICATION_STATUS = "STATUS";
+    private static final String EXTRA_KEY_VALUE_NOTIFICATION_PROFILE_NAME = "PROFILE_NAME";
+
+    //  private variables not related to the intent API
+    private String mActiveProfile = "";
+    private static final String EXTRA_PROFILE_NAME = "DW API Exerciser Profile";
     private static final String LOG_TAG = "Datawedge API Exerciser";
 
     @Override
@@ -79,9 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
-            }
+            public void onNothingSelected(AdapterView<?> parentView) {}
         });
 
         //  Were we invoked through a StartActivity intent?
@@ -198,22 +233,203 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //  GetVersionInfo (6.3 API)
+        final Button btnGetVersionInfo = (Button) findViewById(R.id.btnGetVersionInfo63);
+        btnGetVersionInfo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_GET_VERSION_INFO, EXTRA_EMPTY);
+            }
+        });
+
+        //  RegisterForNotification / UnregisterForNotification(6.3 API)
+        final Button btnRegisterUnregisterForNotifications = (Button) findViewById(R.id.btnRegisterUnregisterNotifications63);
+        final CheckBox checkRegisterForNotifications = (CheckBox) findViewById(R.id.checkRegisterUnregisterNotifications);
+        btnRegisterUnregisterForNotifications.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Bundle extras = new Bundle();
+                extras.putString(EXTRA_KEY_APPLICATION_NAME, getPackageName()); //  The package name of this application
+                extras.putString(EXTRA_KEY_NOTIFICATION_TYPE, EXTRA_KEY_VALUE_SCANNER_STATUS);  //  Register for changes to scanner status.  Could also register for profile switches
+                if (checkRegisterForNotifications.isChecked())
+                {
+                    Toast.makeText(getApplicationContext(), "Changes to scanner status will be shown in toasts", Toast.LENGTH_SHORT).show();
+                    sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_REGISTER_NOTIFICATION, extras);
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "Changes to scanner status stopped", Toast.LENGTH_SHORT).show();
+                    sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_UNREGISTER_NOTIFICATION, extras);
+                }
+            }
+        });
+
+        //  CreateProfile (6.3 API)
+        final Button btnCreateProfile = (Button) findViewById(R.id.btnCreateProfile63);
+        btnCreateProfile.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String profileName = EXTRA_PROFILE_NAME;
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_CREATE_PROFILE, profileName);
+
+                //  Now configure that created profile to apply to our application
+                Bundle profileConfig = new Bundle();
+                profileConfig.putString("PROFILE_NAME", EXTRA_PROFILE_NAME);
+                profileConfig.putString("PROFILE_ENABLED", "true"); //  Seems these are all strings
+                profileConfig.putString("CONFIG_MODE", "UPDATE");
+                Bundle barcodeConfig = new Bundle();
+                barcodeConfig.putString("PLUGIN_NAME", "BARCODE");
+                barcodeConfig.putString("RESET_CONFIG", "true"); //  This is the default but never hurts to specify
+                Bundle barcodeProps = new Bundle();
+                barcodeConfig.putBundle("PARAM_LIST", barcodeProps);
+                profileConfig.putBundle("PLUGIN_CONFIG", barcodeConfig);
+                Bundle appConfig = new Bundle();
+                appConfig.putString("PACKAGE_NAME", getPackageName());      //  Associate the profile with this app
+                appConfig.putStringArray("ACTIVITY_LIST", new String[]{"*"});
+                profileConfig.putParcelableArray("APP_LIST", new Bundle[]{appConfig});
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_SET_CONFIG, profileConfig);
+                //  You can only configure one plugin at a time, we have done the barcode input, now do the intent output
+                profileConfig.remove("PLUGIN_CONFIG");
+                Bundle intentConfig = new Bundle();
+                intentConfig.putString("PLUGIN_NAME", "INTENT");
+                intentConfig.putString("RESET_CONFIG", "true");
+                Bundle intentProps = new Bundle();
+                intentProps.putString("intent_output_enabled", "true");
+                intentProps.putString("intent_action", "com.zebra.dwapiexerciser.ACTION");
+                intentProps.putString("intent_delivery", "2");
+                intentConfig.putBundle("PARAM_LIST", intentProps);
+                profileConfig.putBundle("PLUGIN_CONFIG", intentConfig);
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_SET_CONFIG, profileConfig);
+
+                Toast.makeText(getApplicationContext(), "Profile create command sent.  Check DataWedge application UI", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        //  Set Config (6.3 API)
+        Button btnSetConfig = (Button) findViewById(R.id.btnConfigureProfile63);
+        btnSetConfig.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final CheckBox checkEnableCommonDecoders = (CheckBox) findViewById(R.id.checkEnableCommonDecoders);
+                boolean checkValue = checkEnableCommonDecoders.isChecked();
+                Spinner spinnerScannerForSetConfig = (Spinner) findViewById(R.id.spinnerScannerForSetConfig);
+                int selectedScanner = spinnerScannerForSetConfig.getSelectedItemPosition();
+                String currentDeviceId = "" + selectedScanner;
+                String decoderValue = "false";
+                String status = "disabled";
+                if (checkValue)
+                {
+                    decoderValue = "true";
+                    status = "enabled";
+                }
+                //  Note, another example of SetConfig can be found under the CreateProfile test
+                Bundle profileConfig = new Bundle();
+                profileConfig.putString("PROFILE_NAME", mActiveProfile);
+                profileConfig.putString("PROFILE_ENABLED", "true");
+                profileConfig.putString("CONFIG_MODE", "UPDATE");
+                Bundle barcodeConfig = new Bundle();
+                barcodeConfig.putString("PLUGIN_NAME", "BARCODE");
+                barcodeConfig.putString("RESET_CONFIG", "true");
+                Bundle barcodeProps = new Bundle();
+                barcodeProps.putString("current-device-id", currentDeviceId);
+                barcodeProps.putString("scanner_input_enabled", "true");
+                barcodeProps.putString("decoder_ean8", decoderValue);
+                barcodeProps.putString("decoder_ean13", decoderValue);
+                barcodeProps.putString("decoder_upca", decoderValue);
+                barcodeConfig.putBundle("PARAM_LIST", barcodeProps);
+                profileConfig.putBundle("PLUGIN_CONFIG", barcodeConfig);
+                Bundle appConfig = new Bundle();
+                appConfig.putString("PACKAGE_NAME", getPackageName());
+                appConfig.putStringArray("ACTIVITY_LIST", new String[]{"*"});
+                profileConfig.putParcelableArray("APP_LIST", new Bundle[]{appConfig});
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_SET_CONFIG, profileConfig);
+                Toast.makeText(getApplicationContext(), "EAN8, EAN13 and UPCA are now " + status + " in profile " + EXTRA_PROFILE_NAME, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        //  RestoreConfig (6.3 API)
+        Button btnRestoreConfig = (Button) findViewById(R.id.btnRestoreConfig63);
+        btnRestoreConfig.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_RESTORE_CONFIG, EXTRA_EMPTY);
+                Toast.makeText(getApplicationContext(), "DataWedge reset.  Use CreateProfile button & close / relaunch to get this app working again", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        //  SoftScanTrigger Intent (6.3 API)
+        final Spinner spinnerSoftScanTrigger63 = (Spinner) findViewById(R.id.spinnerSoftScanTrigger63);
+        final Button btnSoftScanTrigger63 = (Button) findViewById(R.id.btnSoftScanTrigger63);
+        btnSoftScanTrigger63.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //  Send SoftScanTriggerIntent for the 6.3 API
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_SOFTSCANTRIGGER_FROM_6_3, spinnerSoftScanTrigger63.getSelectedItem().toString());
+            }
+        });
+
+        //  ScannerInputPlugin (6.3 API)
+        final CheckBox checkScannerInputPlugin63 = (CheckBox) findViewById(R.id.checkScannerInputPlugin63);
+        final Button btnScannerInputPlugin63 = (Button) findViewById(R.id.btnScannerInputPlugin63);
+        btnScannerInputPlugin63.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String parameter = "DISABLE_PLUGIN";
+                if (checkScannerInputPlugin63.isChecked())
+                    parameter = "ENABLE_PLUGIN";
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_SCANNERINPUTPLUGIN_FROM_6_3, parameter);
+            }
+        });
+
+        //  EnumerateScanners (6.3 API)
+        final Button btnEnumerateScanners63 = (Button) findViewById(R.id.btnEnumerateScaners63);
+        btnEnumerateScanners63.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_ENUMERATESCANNERS_FROM_6_3, EXTRA_EMPTY);
+                Toast.makeText(getApplicationContext(), "Enumerated scanners are shown in the 'Set Config' section dropdown", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        //  SetDefaultProfile (6.3 API)
+        final Spinner spinnerSetDefaultProfile63 = (Spinner) findViewById(R.id.spinnerSetDefaultProfile63);
+        final Button btnSetDefaultProfile63 = (Button) findViewById(R.id.btnSetDefaultProfile63);
+        btnSetDefaultProfile63.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //  Note by default on my device (all devices?) the initial default profile is named 'Profile0 (default)'.
+                //  Those parentheses are PART of the name, they aren't to denote which profile is the default profile!
+                //  Easiest way to confirm the default profile has updated is to use `$adb logcat -s DWAPI` and observe the messages
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_SETDEFAULTPROFILE_FROM_6_3, spinnerSetDefaultProfile63.getSelectedItem().toString());
+            }
+        });
+
+        //  ResetDefaultProfile (6.3 API)
+        final Button btnResetDefaultProfile63 = (Button) findViewById(R.id.btnResetDefaultProfile63);
+        btnResetDefaultProfile63.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //  todo documentation here is a bit wrong
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_RESETDEFAULTPROFILE_FROM_6_3, EXTRA_EMPTY);
+            }
+        });
+
+        //  SwitchToProfile (6.3 API)
+        final Spinner spinnerSwitchToProfile63 = (Spinner) findViewById(R.id.spinnerSwitchToProfile63);
+        final Button btnSwitchToProfile63 = (Button) findViewById(R.id.btnSwitchToProfile63);
+        btnSwitchToProfile63.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_SWITCHTOPROFILE_FROM_6_3, spinnerSwitchToProfile63.getSelectedItem().toString());
+            }
+        });
+
         // Create a filter for the broadcast intent
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_ENUMERATEDLIST);           //  DW 6.x
         filter.addAction(ACTION_RESULT_DATAWEDGE_FROM_6_2);//  DW 6.2
-        filter.addCategory(Intent.CATEGORY_DEFAULT);    //  NOTE: this IS REQUIRED for DW6.2!
+        filter.addAction(ACTION_RESULT_NOTIFICATION);      //  DW 6.3 for notifications
+        filter.addCategory(Intent.CATEGORY_DEFAULT);    //  NOTE: this IS REQUIRED for DW6.2 and up!
         //  Whilst we're here also register to receive broadcasts via DataWedge scanning
         filter.addAction(getResources().getString(R.string.activity_intent_filter_action));
         filter.addAction(getResources().getString(R.string.activity_action_from_service));
         registerReceiver(myBroadcastReceiver, filter);
-
     }
 
     @Override
     protected void onDestroy()
     {
         super.onDestroy();
+        //  Should probably have registered / unregistered this in onPause / onResume
         unregisterReceiver(myBroadcastReceiver);
     }
 
@@ -221,20 +437,36 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume()
     {
         super.onResume();
-        sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_GET_PROFILES_LIST, EXTRA_EMPTY);
-        sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_GET_ACTIVE_PROFILE, EXTRA_EMPTY);
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                //  The active profile will not have been updated when the application is first launched, it takes
+                //  a short amount of time for DataWedge to catch up with the current active application
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_GET_PROFILES_LIST, EXTRA_EMPTY);
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_GET_ACTIVE_PROFILE, EXTRA_EMPTY);
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_ENUMERATESCANNERS_FROM_6_3, EXTRA_EMPTY);
+            }
+        });
     }
 
     private BroadcastReceiver myBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals(ACTION_ENUMERATEDLIST)) {
-                Bundle b = intent.getExtras();
-                for (String key : b.keySet())
-                {
-                    Log.v(LOG_TAG, key);
-                }
+            Bundle b = intent.getExtras();
+            //  This is useful for debugging to verify the format of received intents from DataWedge
+            //for (String key : b.keySet())
+            //{
+            //    Log.v(LOG_TAG, key);
+            //}
+            if (action.equals(ACTION_ENUMERATEDLIST))
+            {
+                //  6.0 API Enumerate Scanners
                 String[] scanner_list = b.getStringArray(KEY_ENUMERATEDSCANNERLIST);
                 String userFriendlyScanners = "";
                 for (int i = 0; i < scanner_list.length; i++)
@@ -245,6 +477,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else if (action.equals(getResources().getString(R.string.activity_intent_filter_action)))
             {
+                //  Received a barcode scan
                 try {
                     displayScanResult(intent, "via Broadcast");
                 }
@@ -255,6 +488,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else if (action.equals(getResources().getString(R.string.activity_action_from_service)))
             {
+                //  Received a barcode scan
                 try {
                     displayScanResult(intent, "via Service");
                 }
@@ -267,18 +501,115 @@ public class MainActivity extends AppCompatActivity {
             {
                 if (intent.hasExtra(EXTRA_RESULT_GET_ACTIVE_PROFILE))
                 {
+                    //  6.2 API to GetActiveProfile
                     String activeProfile = intent.getStringExtra(EXTRA_RESULT_GET_ACTIVE_PROFILE);
                     TextView txtActiveProfile = (TextView) findViewById(R.id.txtActiveProfileOutput62);
                     txtActiveProfile.setText(activeProfile);
+                    TextView txtActiveProfile63 = (TextView) findViewById(R.id.txtActiveProfile63);
+                    txtActiveProfile63.setText("Act on Profile: " + activeProfile);
+                    mActiveProfile = activeProfile;
                 }
                 else if (intent.hasExtra(EXTRA_RESULT_GET_PROFILE_LIST))
                 {
+                    //  6.2 API to GetProfileList
                     String[] profilesList = intent.getStringArrayExtra(EXTRA_RESULT_GET_PROFILE_LIST);
+                    //  Profile list for 6.2 APIs
                     Spinner profileListSpinner = (Spinner) findViewById(R.id.spinnerSelectProfile62);
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(),
                             android.R.layout.simple_spinner_item, profilesList);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     profileListSpinner.setAdapter(adapter);
+
+                    //  Profile list spinner for 6.3 SetDefaultProfile APIs
+                    Spinner spinnerSetDefaultProfile63 = (Spinner) findViewById(R.id.spinnerSetDefaultProfile63);
+                    spinnerSetDefaultProfile63.setAdapter(adapter);
+
+                    //  Profile list spinner for 6.3 SwitchToProfile APIs
+                    Spinner spinnerSwitchToProfile63 = (Spinner) findViewById(R.id.spinnerSwitchToProfile63);
+                    spinnerSwitchToProfile63.setAdapter(adapter);
+
+                }
+                else if (intent.hasExtra(EXTRA_RESULT_GET_VERSION_INFO))
+                {
+                    //  6.3 API for GetVersionInfo
+                    String SimulScanVersion  = "Not supported";
+                    String[] ScannerFirmware = {"Not available"};
+                    Bundle versionInformation = intent.getBundleExtra(EXTRA_RESULT_GET_VERSION_INFO);
+                    String DWVersion = versionInformation.getString("DATAWEDGE");
+                    String BarcodeVersion = versionInformation.getString("BARCODE_SCANNING");
+                    String DecoderVersion = versionInformation.getString("DECODER_LIBRARY");
+                    if(versionInformation.containsKey("SCANNER_FIRMWARE")){
+                        ScannerFirmware = versionInformation.getStringArray("SCANNER_FIRMWARE");
+                    }
+                    if(versionInformation.containsKey("SIMULSCAN")) {
+                        SimulScanVersion = versionInformation.getString("SIMULSCAN");
+                    }
+                    String userReadableVersion = "DataWedge: " + DWVersion + ", Barcode: " + BarcodeVersion +
+                            ", DecoderVersion: " + DecoderVersion + ", SimulScan: " + SimulScanVersion +
+                            ", Scanner Firmware: ";
+                    for (int i = 0; i < ScannerFirmware.length; i++)
+                        userReadableVersion += ScannerFirmware[i] + " ";
+                    TextView txtReceivedVersions = (TextView) findViewById(R.id.txtReceivedVersions);
+                    txtReceivedVersions.setText(userReadableVersion);
+                    Log.i(LOG_TAG, "DataWedge Version info: " + userReadableVersion);
+                }
+                else if (intent.hasExtra(EXTRA_RESULT_ENUMERATE_SCANNERS))
+                {
+                    //  6.3 API to EnumerateScanners.  Note the format is very different from 6.0.
+                    ArrayList scanner_list_arraylist = b.getParcelableArrayList(EXTRA_RESULT_ENUMERATE_SCANNERS);
+                    //  Enumerate Scanners (6.3) returns a bundle array.  Each bundle has the following keys:
+                    //  SCANNER_CONNECTION_STATE
+                    //  SCANNER_NAME
+                    //  SCANNER_INDEX
+                    //  todo help file is wrong
+                    String[] scanner_list = new String[scanner_list_arraylist.size()];
+                    String userFriendlyScanners = "";
+                    for (int i = 0; i < scanner_list_arraylist.size(); i++)
+                    {
+                        String scannerName = (String)((Bundle)scanner_list_arraylist.get(i)).get("SCANNER_NAME");
+                        //  Should really store this and pass it during SetConfig.  I just assume the indices are contiguous which is probably not too smart.
+                        Integer scannerIndex = (Integer)((Bundle)scanner_list_arraylist.get(i)).get("SCANNER_INDEX");
+                        scanner_list[i] = scannerName;
+                        userFriendlyScanners += "{" + scannerName + "} ";
+                    }
+
+                    //  Update the UI which is used for SetConfig (6.3)
+                    Spinner spinnerScannerForSetConfig = (Spinner) findViewById(R.id.spinnerScannerForSetConfig);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(),
+                            android.R.layout.simple_spinner_item, scanner_list);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerScannerForSetConfig.setAdapter(adapter);
+                    Log.i(LOG_TAG, "Scanners on device: " + userFriendlyScanners);
+
+                    //  We trigger this callback in onResume - use this to determine that this device supports the 6.3 APIs
+                    TextView txtHeading63Description = (TextView) findViewById(R.id.txtHeading63Description);
+                    txtHeading63Description.setText("These will work on any Zebra device running DataWedge 6.3 or higher");
+                    enableUiFor63();
+                }
+            }
+            else if (action.equals(ACTION_RESULT_NOTIFICATION))
+            {
+                //  6.3 API for RegisterForNotification
+                if (intent.hasExtra(EXTRA_RESULT_NOTIFICATION))
+                {
+                    Bundle extras = intent.getBundleExtra(EXTRA_RESULT_NOTIFICATION);
+                    String notificationType = extras.getString(EXTRA_RESULT_NOTIFICATION_TYPE);
+                    if (notificationType != null && notificationType.equals(EXTRA_KEY_VALUE_SCANNER_STATUS))
+                    {
+                        //  We have received a change in Scanner status
+                        String userReadableScannerStatus = "Scanner status: " + extras.getString(EXTRA_KEY_VALUE_NOTIFICATION_STATUS) +
+                                ", profile: " + extras.getString(EXTRA_KEY_VALUE_NOTIFICATION_PROFILE_NAME);
+                        Toast.makeText(getApplicationContext(), userReadableScannerStatus, Toast.LENGTH_SHORT).show();
+                        Log.i(LOG_TAG, userReadableScannerStatus);
+                    }
+                    else if (notificationType != null && notificationType.equals(EXTRA_KEY_VALUE_PROFILE_SWITCH))
+                    {
+                        //  The profile has changed (Note, this example app does NOT register for this)
+                    }
+                    else if (notificationType != null && notificationType.equals(EXTRA_KEY_VALUE_CONFIGURATION_UPDATE))
+                    {
+                        //  Future enhancement only
+                    }
                 }
             }
         }
@@ -308,6 +639,14 @@ public class MainActivity extends AppCompatActivity {
         this.sendBroadcast(dwIntent);
     }
 
+    private void sendDataWedgeIntentWithExtra(String action, String extraKey, Bundle extras)
+    {
+        Intent dwIntent = new Intent();
+        dwIntent.setAction(action);
+        dwIntent.putExtra(extraKey, extras);
+        this.sendBroadcast(dwIntent);
+    }
+
     private void sendDataWedgeIntentWithoutExtra(String action)
     {
         Intent dwIntent = new Intent();
@@ -327,5 +666,32 @@ public class MainActivity extends AppCompatActivity {
         lblScanSource.setText(decodedSource + " " + howDataReceived);
         lblScanData.setText(decodedData);
         lblScanLabelType.setText(decodedLabelType);
+    }
+
+    private void enableUiFor63()
+    {
+        //  Enable the UI elements which are specific to the DataWedge 6.3 UI
+        Button btnGetVersionInfo = (Button) findViewById(R.id.btnGetVersionInfo63);
+        btnGetVersionInfo.setEnabled(true);
+        Button btnRegisterUnregisterNotification = (Button) findViewById(R.id.btnRegisterUnregisterNotifications63);
+        btnRegisterUnregisterNotification.setEnabled(true);
+        Button btnCreateProfile = (Button) findViewById(R.id.btnCreateProfile63);
+        btnCreateProfile.setEnabled(true);
+        Button btnSetConfig = (Button) findViewById(R.id.btnConfigureProfile63);
+        btnSetConfig.setEnabled(true);
+        Button btnRestoreConfig = (Button) findViewById(R.id.btnRestoreConfig63);
+        btnRestoreConfig.setEnabled(true);
+        Button btnSoftScanTrigger = (Button) findViewById(R.id.btnSoftScanTrigger63);
+        btnSoftScanTrigger.setEnabled(true);
+        Button btnScannerInputPlugin = (Button) findViewById(R.id.btnScannerInputPlugin63);
+        btnScannerInputPlugin.setEnabled(true);
+        Button btnEnumerateScanners = (Button) findViewById(R.id.btnEnumerateScaners63);
+        btnEnumerateScanners.setEnabled(true);
+        Button btnSetDefaultProfile = (Button) findViewById(R.id.btnSetDefaultProfile63);
+        btnSetDefaultProfile.setEnabled(true);
+        Button btnResetDefaultProfile = (Button) findViewById(R.id.btnResetDefaultProfile63);
+        btnResetDefaultProfile.setEnabled(true);
+        Button btnSwitchToProfile = (Button) findViewById(R.id.btnSwitchToProfile63);
+        btnSwitchToProfile.setEnabled(true);
     }
 }
