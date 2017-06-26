@@ -24,6 +24,14 @@ Application to exercise the DataWedge Intent API for testing purposes
 * List Profiles
 * Enable / Disable Datawedge
 
+## APIs (6.3):
+* Get Version Info
+* Register / Unregister for (Scanner) Notifications
+* Create Profile
+* Set Config
+* Restore Configuration
+* 6.3 variants of the APIs first defined for 6.0 e.g. SoftScanTrigger etc.
+
 ## Device Configuration:
 1. Set up a Datawedge profile that will be in effect when this application is run [to get started easily, just modify 'Profile0 (default)].  
 2. Ensure Datawedge is enabled and the configured profile has enabled the 'Barcode input' plugin.  
@@ -32,6 +40,7 @@ Application to exercise the DataWedge Intent API for testing purposes
   * Intent Output: Enabled
   * Intent action: com.zebra.dwapiexerciser.ACTION
   * Intent category: leave blank
+*Note: If you are using the 6.3 APIs you can use CreateProfile to automatically create, configure and associate an appropriate profile which will work and enable scanning via intents*
 
 ## Use:
 Hopefully the UI is self explanatory.  Returned barcode data is shown at the top of the view with some indication whether the intent (from Datawedge) was invoked through startActivity(), sendBroadcast() or startService().
