@@ -399,7 +399,6 @@ public class MainActivity extends AppCompatActivity {
         final Button btnResetDefaultProfile63 = (Button) findViewById(R.id.btnResetDefaultProfile63);
         btnResetDefaultProfile63.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //  todo documentation here is a bit wrong
                 sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_RESETDEFAULTPROFILE_FROM_6_3, EXTRA_EMPTY);
             }
         });
@@ -413,6 +412,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
         // Create a filter for the broadcast intent
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_ENUMERATEDLIST);           //  DW 6.x
@@ -423,20 +435,7 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(getResources().getString(R.string.activity_intent_filter_action));
         filter.addAction(getResources().getString(R.string.activity_action_from_service));
         registerReceiver(myBroadcastReceiver, filter);
-    }
 
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-        //  Should probably have registered / unregistered this in onPause / onResume
-        unregisterReceiver(myBroadcastReceiver);
-    }
-
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -452,6 +451,13 @@ public class MainActivity extends AppCompatActivity {
                 sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_ENUMERATESCANNERS_FROM_6_3, EXTRA_EMPTY);
             }
         });
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        unregisterReceiver(myBroadcastReceiver);
     }
 
     private BroadcastReceiver myBroadcastReceiver = new BroadcastReceiver() {
@@ -561,7 +567,6 @@ public class MainActivity extends AppCompatActivity {
                     //  SCANNER_CONNECTION_STATE
                     //  SCANNER_NAME
                     //  SCANNER_INDEX
-                    //  todo help file is wrong
                     String[] scanner_list = new String[scanner_list_arraylist.size()];
                     String userFriendlyScanners = "";
                     for (int i = 0; i < scanner_list_arraylist.size(); i++)
