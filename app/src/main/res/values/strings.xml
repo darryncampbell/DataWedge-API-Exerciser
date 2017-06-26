@@ -11,10 +11,11 @@
     <string name="datawedge_intent_key_source">com.symbol.datawedge.source</string>
     <string name="datawedge_intent_key_label_type">com.symbol.datawedge.label_type</string>
     <string name="datawedge_intent_key_data">com.symbol.datawedge.data_string</string>
-    <string name="command_refresh_ui">Refresh UI</string>
+    <string name="command_refresh_ui">Update Active Profile and List</string>
     <string name="command_delete_profile">Delete Profile</string>
     <string name="command_clone_profile">Clone Profile</string>
     <string name="command_rename_profile">Rename Profile</string>
+    <string name="emptyScannerList">Device does not support ACTION_ENUMERATESCANNERS</string>
 
     <string-array name="softscanTriggerOptions">
         <item>@string/softScanTriggerOptionsStartScanning</item>
@@ -31,6 +32,10 @@
         <item>@string/command_delete_profile</item>
         <item>@string/command_clone_profile</item>
         <item>@string/command_rename_profile</item>
+    </string-array>
+
+    <string-array name="enumeratedScannerList">
+        <item>@string/emptyScannerList</item>
     </string-array>
 
 </resources>

@@ -128,6 +128,13 @@
                             android:text="DataWedge 6.x APIs"
                             android:id="@+id/txtHeading6.x" />
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="These will work on any Zebra device running DataWedge 6.0 or higher.  Note the API changed between DW 6.0 and 6.3 and this section demonstrates the original 6.0 API to which future devices should be backwardly compatible."
+                            android:id="@+id/txtHeading6.xDescription" />
+
                     </LinearLayout>
 
 
@@ -202,7 +209,8 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/checkScannerInputPlugin"
                             android:layout_gravity="center_vertical|right"
-                            android:text="Enable Plugin?" />
+                            android:text="Enable Plugin?"
+                            android:checked="true"/>
 
                     </LinearLayout>
 
@@ -404,6 +412,13 @@
                             android:text="DataWedge 6.2 APIs"
                             android:id="@+id/txtHeading6.2" />
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="These will work on any Zebra device running DataWedge 6.2 or higher"
+                            android:id="@+id/txtHeading6.2Description" />
+
                     </LinearLayout>
 
                 </TableRow>
@@ -426,7 +441,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:text="Active Profile (Refresh UI if unexpected)"
+                            android:text="Active Profile"
                             android:id="@+id/txtActiveProfile62" />
 
                         <TextView
@@ -587,6 +602,560 @@
                 <View
                     android:layout_height="2dip"
                     android:background="@color/zebraBlue" />
+
+                <!--  6.3 APIs -->
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="DataWedge 6.3 APIs"
+                            android:id="@+id/txtHeading6.3" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="YOUR DEVICE DOES NOT SUPPORT 6.3 APIS"
+                            android:id="@+id/txtHeading63Description" />
+
+                    </LinearLayout>
+
+                </TableRow>
+
+                <!--  New functionality in 6.3 APIs -->
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Get Version Info"
+                            android:id="@+id/txtGetVersionInfo" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Received version info will go here"
+                            android:id="@+id/txtReceivedVersions" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnGetVersionInfo63"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:layout_gravity="center"
+                        android:enabled="false"
+                        />
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Register / Unregister for scanner notifications"
+                            android:id="@+id/txtRegisterUnregisterNotifications" />
+
+                        <CheckBox
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/checkRegisterUnregisterNotifications"
+                            android:layout_gravity="center_vertical|right"
+                            android:text="Register for Notifications?"
+                            android:checked="true"/>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnRegisterUnregisterNotifications63"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:layout_gravity="center"
+                        android:enabled="false"
+                        />
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Create Profile"
+                            android:id="@+id/txtCreateProfile" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="The created profile will configure DataWedge to send scans to this app via intent, provided no other profile is also associated with the activity"
+                            android:id="@+id/txtCreateProfileExplanation" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnCreateProfile63"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:layout_gravity="center"
+                        android:enabled="false"
+                        />
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Set Config"
+                            android:id="@+id/txtConfigureProfile" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Act on Profile: NOT SUPPORTED"
+                            android:id="@+id/txtActiveProfile63" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Select Scanner"
+                            android:id="@+id/txtSelectScannerForSetConfig" />
+
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/spinnerScannerForSetConfig"
+                            android:entries="@array/enumeratedScannerList"
+                            android:paddingRight="10dp"
+                            />
+
+                        <CheckBox
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/checkEnableCommonDecoders"
+                            android:layout_gravity="center_vertical|right"
+                            android:text="Enable common decoders?"
+                            android:checked="true"/>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnConfigureProfile63"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:layout_gravity="center"
+                        android:enabled="false"
+                        />
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Restore Configuration"
+                            android:id="@+id/txtRestoreConfig" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="WARNING: Resets all user-configured settings and restores DataWedge to its factory settings."
+                            android:id="@+id/txtRestoreConfigExplanation" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnRestoreConfig63"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:layout_gravity="center"
+                        android:enabled="false"
+                        />
+
+                </TableRow>
+
+                <!--  6.3 Controls which replace the earlier variants introduced in 6.0 -->
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="SoftScanTrigger (6.3)"
+                            android:id="@+id/txtSoftScanTrigger63" />
+
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/spinnerSoftScanTrigger63"
+                            android:entries="@array/softscanTriggerOptions"
+                            android:paddingRight="10dp" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnSoftScanTrigger63"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:enabled="false"
+                        />
+
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="ScannerInputPlugin (6.3)"
+                            android:id="@+id/txtScannerInputPlugin63" />
+
+                        <CheckBox
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/checkScannerInputPlugin63"
+                            android:layout_gravity="center_vertical|right"
+                            android:text="Enable Plugin?"
+                            android:checked="true"/>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnScannerInputPlugin63"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:enabled="false"
+                        />
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="EnumerateScanners (6.3)"
+                            android:id="@+id/txtEnumerateScanners63" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnEnumerateScaners63"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:enabled="false"
+                        />
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="SetDefaultProfile (6.3)"
+                            android:id="@+id/txtSetDefaultProfile63" />
+
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/spinnerSetDefaultProfile63"
+                            android:entries="@array/profileList"
+                            android:paddingRight="10dp"
+                            />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnSetDefaultProfile63"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:enabled="false"
+                        />
+
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="ResetDefaultProfile (6.3)"
+                            android:id="@+id/txtResetDefaultProfile63" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnResetDefaultProfile63"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:enabled="false"
+                        />
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="SwitchToProfile (6.3)"
+                            android:id="@+id/txtSwitchToProfile63" />
+
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/spinnerSwitchToProfile63"
+                            android:entries="@array/profileList"
+                            android:paddingRight="10dp"
+                            />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnSwitchToProfile63"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:enabled="false"
+                        />
+
+
+                </TableRow>
+
             </TableLayout>
         </LinearLayout>
     </ScrollView>
