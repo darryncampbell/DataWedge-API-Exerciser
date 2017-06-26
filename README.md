@@ -40,7 +40,8 @@ Application to exercise the DataWedge Intent API for testing purposes
   * Intent Output: Enabled
   * Intent action: com.zebra.dwapiexerciser.ACTION
   * Intent category: leave blank
-*Note: If you are using the 6.3 APIs you can use CreateProfile to automatically create, configure and associate an appropriate profile which will work and enable scanning via intents*
+
+**Note: If you are using the 6.3 APIs you can use CreateProfile to automatically create, configure and associate an appropriate profile which will work and enable scanning via intents**
 
 ## Use:
 Hopefully the UI is self explanatory.  Returned barcode data is shown at the top of the view with some indication whether the intent (from Datawedge) was invoked through startActivity(), sendBroadcast() or startService().
