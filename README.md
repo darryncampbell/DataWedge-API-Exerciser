@@ -47,6 +47,13 @@ Application to exercise the DataWedge Intent API for testing purposes
 Hopefully the UI is self explanatory.  Returned barcode data is shown at the top of the view with some indication whether the intent (from Datawedge) was invoked through startActivity(), sendBroadcast() or startService().
 
 To mimic DataWedge on a non-Zebra device you can use adb to send an intent of the same format that DataWedge would usually send on scan:
+For startActivity:
 ```
 adb shell am start -a com.zebra.dwapiexerciser.ACTION -e com.symbol.datawedge.data_string 0123456789 -e com.symbol.datawedge.source scanner -e com.symbol.datawedge.label_type EAN13
 ```
+or for broadcast:
+```
+adb shell am broadcast -a com.zebra.dwapiexerciser.ACTION -e com.symbol.datawedge.data_string 0123456789 -e com.symbol.datawedge.source scanner -e com.symbol.datawedge.label_type EAN13
+```
+
+
