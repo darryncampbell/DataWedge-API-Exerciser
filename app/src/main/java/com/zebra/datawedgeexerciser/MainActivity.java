@@ -412,20 +412,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-
         // Create a filter for the broadcast intent
+        //  Not ideal to put this here but we want to receive broadcast intents from the ZXing activity
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_ENUMERATEDLIST);           //  DW 6.x
         filter.addAction(ACTION_RESULT_DATAWEDGE_FROM_6_2);//  DW 6.2
@@ -454,10 +442,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        unregisterReceiver(myBroadcastReceiver);
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+    }
+
+    @Override
     protected void onPause()
     {
         super.onPause();
-        unregisterReceiver(myBroadcastReceiver);
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
     }
 
     private BroadcastReceiver myBroadcastReceiver = new BroadcastReceiver() {
