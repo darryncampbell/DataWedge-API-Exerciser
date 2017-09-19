@@ -1584,6 +1584,13 @@
                             android:text="Enable common decoders?"
                             android:checked="true"/>
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Temporary effect, will not reflect in profile config"
+                            android:id="@+id/txtSwitchScannerParamsExplanation" />
+
                     </LinearLayout>
 
                     <Button

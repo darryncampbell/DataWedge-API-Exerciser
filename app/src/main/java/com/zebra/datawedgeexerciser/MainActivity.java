@@ -94,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String EXTRA_GET_CONFIG = "com.symbol.datawedge.api.GET_CONFIG";
     private static final String EXTRA_GET_DISABLED_APP_LIST = "com.symbol.datawedge.api.GET_DISABLED_APP_LIST";
     private static final String EXTRA_SET_DISABLED_APP_LIST = "com.symbol.datawedge.api.SET_DISABLED_APP_LIST";
+    private static final String EXTRA_SWITCH_SCANNER = "com.symbol.datawedge.api.SWITCH_SCANNER";
+    private static final String EXTRA_SWITCH_SCANNER_PARAMS = "com.symbol.datawedge.api.SWITCH_SCANNER_PARAMS";
     //  6.5 API and up Parameter keys and values associated with extras received from Datawedge
     private static final String EXTRA_RESULT = "RESULT";
     private static final String EXTRA_RESULT_INFO = "RESULT_INFO";
@@ -543,6 +545,45 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //  SwitchScanner (6.5 API)
+        final Button btnSwitchScanner = (Button) findViewById(R.id.btnSwitchScanner);
+        btnSwitchScanner.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Spinner spinnerSwitchScanner = (Spinner) findViewById(R.id.spinnerSwitchScanner);
+                String selectedScannerText = spinnerSwitchScanner.getSelectedItem().toString();
+                //  When we populated the scanner spinner we prepended the scanner index [between brackets]
+                int closeBracketPosition = selectedScannerText.lastIndexOf(']');
+                int openBracketPosition = selectedScannerText.lastIndexOf('[');
+                String scannerIndex = selectedScannerText.substring(openBracketPosition + 1, closeBracketPosition);
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_SWITCH_SCANNER, scannerIndex);
+            }
+        });
+
+        //  SwitchScannerParams (6.5 API)
+        final Button btnSwitchScannerParams = (Button) findViewById(R.id.btnSwitchScannerParams);
+        btnSwitchScannerParams.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final CheckBox checkSwitchScannerParams = (CheckBox) findViewById(R.id.checkSwitchScannerParams);
+                boolean checkValue = checkSwitchScannerParams.isChecked();
+                String decoderValue = "false";
+                String status = "not ";
+                if (checkValue)
+                {
+                    decoderValue = "true";
+                    status = "";
+                }
+                //  Note: This confused me at first but do NOT expect these properties to be reflected
+                //        in the profile configuration, they are just temporary and are lost if you
+                //        switch config, set config or do anything else similar
+                //  This will always work on the scanner in the active profile
+                Bundle barcodeProps = new Bundle();
+                barcodeProps.putString("decoder_ean8", decoderValue);
+                barcodeProps.putString("decoder_ean13", decoderValue);
+                barcodeProps.putString("decoder_upca", decoderValue);
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_SWITCH_SCANNER_PARAMS, barcodeProps);
+                Toast.makeText(getApplicationContext(), "EAN8, EAN13 and UPCA barcodes will " + status + "scan", Toast.LENGTH_LONG).show();
+            }
+        });
 
         // Create a filter for the broadcast intent
         //  Not ideal to put this here but we want to receive broadcast intents from the ZXing activity
@@ -663,9 +704,9 @@ public class MainActivity extends AppCompatActivity {
                         if (intent.hasExtra(EXTRA_RESULT_INFO))
                         {
                             Bundle result_info = intent.getBundleExtra(EXTRA_RESULT_INFO);
-                            String result_code = result_info.getString("RESULT_CODE");
+                            String[] result_code = result_info.getStringArray("RESULT_CODE");
                             if (result_code != null)
-                                info = " - " + result_code;
+                                info = " - " + result_code[0];
                         }
                         switch(command)
                         {
