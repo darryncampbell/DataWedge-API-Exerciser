@@ -1290,13 +1290,13 @@
 
                 <!--  New functionality in 6.5 APIs -->
 
-                <!--View
+                <View
                     android:layout_height="2dip"
-                    android:background="@color/zebraBlue" /-->
+                    android:background="@color/zebraBlue" />
 
                 <!--  6.5 APIs -->
 
-                <!--TableRow
+                <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingTop="5dp"
@@ -1324,9 +1324,285 @@
 
                     </LinearLayout>
 
-                </TableRow-->
+                </TableRow>
 
-                <!--  New functionality in 6.5 APIs -->
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Result Code"
+                            android:id="@+id/txtIntentResultCodeTitle" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="YOUR DEVICE DOES NOT SUPPORT DATAWEDGE 6.5 APIs"
+                            android:id="@+id/txtIntentResultCode" />
+
+                    </LinearLayout>
+
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Get Config"
+                            android:id="@+id/txtGetConfig" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Received configuration will go here"
+                            android:id="@+id/txtReceivedConfiguration" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnGetConfig"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:layout_gravity="center"
+                        android:enabled="false"
+                        />
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Get Disabled App List"
+                            android:id="@+id/txtGetDisabledAppList" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Received disabled app list will go here"
+                            android:id="@+id/txtReceivedDisabledAppList" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnGetDisabledAppList"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:layout_gravity="center"
+                        android:enabled="false"
+                        />
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Set Disabled App List"
+                            android:id="@+id/txtSetDisabledAppListTitle" />
+
+                        <CheckBox
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/checkSetDisabledAppListThisApp"
+                            android:layout_gravity="center_vertical|right"
+                            android:text="Include this app?"
+                            android:checked="false"/>
+
+                        <CheckBox
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/checkSetDisabledAppListEB"
+                            android:layout_gravity="center_vertical|right"
+                            android:text="Include Enterprise Browser?"
+                            android:checked="true"/>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnSetDisabledAppList"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:layout_gravity="center"
+                        android:enabled="false"
+                        />
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Switch Scanner"
+                            android:id="@+id/txtSwitchScanner" />
+
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/spinnerSwitchScanner"
+                            android:entries="@array/enumeratedScannerList"
+                            android:paddingRight="10dp"
+                            />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnSwitchScanner"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:layout_gravity="center"
+                        android:enabled="false"
+                        />
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Switch Scanner Params"
+                            android:id="@+id/txtSwitchScannerParams" />
+
+                        <CheckBox
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/checkSwitchScannerParams"
+                            android:layout_gravity="center_vertical|right"
+                            android:text="Enable common decoders?"
+                            android:checked="true"/>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnSwitchScannerParams"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:layout_gravity="center"
+                        android:enabled="false"
+                        />
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
 
             </TableLayout>
         </LinearLayout>
