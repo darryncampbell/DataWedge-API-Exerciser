@@ -88,8 +88,24 @@ public class MainActivity extends AppCompatActivity {
     //  6.4 API and up Parameter keys and values associated with extras received from Datawedge
     private static final String EXTRA_RESULT_GET_DATAWEDGE_STATUS = "com.symbol.datawedge.api.RESULT_GET_DATAWEDGE_STATUS";
 
+    //  6.5 API and up Extras sent to Datawedge
+    private static final String EXTRA_SEND_RESULT = "SEND_RESULT";
+    private static final String EXTRA_COMMAND_IDENTIFIER = "COMMAND_IDENTIFIER";
+    private static final String EXTRA_GET_CONFIG = "com.symbol.datawedge.api.GET_CONFIG";
+    private static final String EXTRA_GET_DISABLED_APP_LIST = "com.symbol.datawedge.api.GET_DISABLED_APP_LIST";
+    private static final String EXTRA_SET_DISABLED_APP_LIST = "com.symbol.datawedge.api.SET_DISABLED_APP_LIST";
+    private static final String EXTRA_SWITCH_SCANNER = "com.symbol.datawedge.api.SWITCH_SCANNER";
+    private static final String EXTRA_SWITCH_SCANNER_PARAMS = "com.symbol.datawedge.api.SWITCH_SCANNER_PARAMS";
+    //  6.5 API and up Parameter keys and values associated with extras received from Datawedge
+    private static final String EXTRA_RESULT = "RESULT";
+    private static final String EXTRA_RESULT_INFO = "RESULT_INFO";
+    private static final String EXTRA_COMMAND = "COMMAND";
+    private static final String EXTRA_RESULT_GET_CONFIG = "com.symbol.datawedge.api.RESULT_GET_CONFIG";
+    private static final String EXTRA_RESULT_GET_DISABLED_APP_LIST = "com.symbol.datawedge.api.RESULT_GET_DISABLED_APP_LIST";
+
     //  private variables not related to the intent API
     private String mActiveProfile = "";
+    private Boolean bRequestSendResult = false;
     private static final String EXTRA_PROFILE_NAME = "DW API Exerciser Profile";
     private static final String LOG_TAG = "Datawedge API Exerciser";
 
@@ -461,6 +477,113 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //  GetConfig (6.5 API)
+        final Button btnGetConfig = (Button) findViewById(R.id.btnGetConfig);
+        btnGetConfig.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Bundle bMain = new Bundle();
+                bMain.putString("PROFILE_NAME", mActiveProfile);
+                Bundle bConfig = new Bundle();
+                ArrayList<String> pluginName = new ArrayList<>();
+                pluginName.add("BARCODE");
+                bConfig.putStringArrayList("PLUGIN_NAME", pluginName);
+                bMain.putBundle("PLUGIN_CONFIG", bConfig);
+                //  This is one example of a config that can be obtained.  The documentation details how
+                //  to obtain the associated applications with a profile or the current scanner status
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_GET_CONFIG, bMain);
+            }
+        });
+
+
+        //  GetDisabledAppList (6.5 API)
+        final Button btnGetDisabledAppList = (Button) findViewById(R.id.btnGetDisabledAppList);
+        btnGetDisabledAppList.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_GET_DISABLED_APP_LIST, EXTRA_EMPTY);
+            }
+        });
+
+        //  SetDisabledAppList (6.5 API)
+        final Button btnSetDisabledAppList = (Button) findViewById(R.id.btnSetDisabledAppList);
+        btnSetDisabledAppList.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final CheckBox checkSetDisableAppListThisApp = (CheckBox) findViewById(R.id.checkSetDisabledAppListThisApp);
+                boolean checkValueThisApp = checkSetDisableAppListThisApp.isChecked();
+                final CheckBox checkSetDisableAppListEB = (CheckBox) findViewById(R.id.checkSetDisabledAppListEB);
+                boolean checkValueEB = checkSetDisableAppListEB.isChecked();
+
+                int countChecked = 1;
+                if (checkValueThisApp && checkValueEB) countChecked = 2;
+                if (!checkValueThisApp && !checkValueEB) countChecked = 0;
+                Bundle[] appList = new Bundle[countChecked];
+                int index = 0;
+                if (checkValueThisApp)
+                {
+                    Bundle thisApp = new Bundle();
+                    thisApp.putString("PACKAGE_NAME", getPackageName());
+                    thisApp.putStringArray("ACTIVITY_LIST", new String[] {"*"});
+                    appList[index] = thisApp;
+                    index++;
+                }
+                if (checkValueEB)
+                {
+                    Bundle ebApp = new Bundle();
+                    ebApp.putString("PACKAGE_NAME", "com.symbol.enterprisebrowser");
+                    ebApp.putStringArray("ACTIVITY_LIST", new String[] {"*"});
+                    appList[index] = ebApp;
+                }
+
+                Bundle disabledAppListConfig = new Bundle();
+                disabledAppListConfig.putString("CONFIG_MODE", "OVERWRITE");
+                if (countChecked > 0) {
+                    //  If you provide a config_mode of overwirte and do not specify app_list the
+                    //  disabled app list is deleted, which is what we want if the user has checked no boxes.
+                    disabledAppListConfig.putParcelableArray("APP_LIST", appList);
+                }
+
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_SET_DISABLED_APP_LIST, disabledAppListConfig, "SET_DISABLED_APP_LIST_UI");
+            }
+        });
+
+        //  SwitchScanner (6.5 API)
+        final Button btnSwitchScanner = (Button) findViewById(R.id.btnSwitchScanner);
+        btnSwitchScanner.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Spinner spinnerSwitchScanner = (Spinner) findViewById(R.id.spinnerSwitchScanner);
+                String selectedScannerText = spinnerSwitchScanner.getSelectedItem().toString();
+                //  When we populated the scanner spinner we prepended the scanner index [between brackets]
+                int closeBracketPosition = selectedScannerText.lastIndexOf(']');
+                int openBracketPosition = selectedScannerText.lastIndexOf('[');
+                String scannerIndex = selectedScannerText.substring(openBracketPosition + 1, closeBracketPosition);
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_SWITCH_SCANNER, scannerIndex);
+            }
+        });
+
+        //  SwitchScannerParams (6.5 API)
+        final Button btnSwitchScannerParams = (Button) findViewById(R.id.btnSwitchScannerParams);
+        btnSwitchScannerParams.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final CheckBox checkSwitchScannerParams = (CheckBox) findViewById(R.id.checkSwitchScannerParams);
+                boolean checkValue = checkSwitchScannerParams.isChecked();
+                String decoderValue = "false";
+                String status = "not ";
+                if (checkValue)
+                {
+                    decoderValue = "true";
+                    status = "";
+                }
+                //  Note: This confused me at first but do NOT expect these properties to be reflected
+                //        in the profile configuration, they are just temporary and are lost if you
+                //        switch config, set config or do anything else similar
+                //  This will always work on the scanner in the active profile
+                Bundle barcodeProps = new Bundle();
+                barcodeProps.putString("decoder_ean8", decoderValue);
+                barcodeProps.putString("decoder_ean13", decoderValue);
+                barcodeProps.putString("decoder_upca", decoderValue);
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_SWITCH_SCANNER_PARAMS, barcodeProps);
+                Toast.makeText(getApplicationContext(), "EAN8, EAN13 and UPCA barcodes will " + status + "scan", Toast.LENGTH_LONG).show();
+            }
+        });
 
         // Create a filter for the broadcast intent
         //  Not ideal to put this here but we want to receive broadcast intents from the ZXing activity
@@ -530,10 +653,10 @@ public class MainActivity extends AppCompatActivity {
             String action = intent.getAction();
             Bundle b = intent.getExtras();
             //  This is useful for debugging to verify the format of received intents from DataWedge
-            for (String key : b.keySet())
-            {
-                Log.v(LOG_TAG, key);
-            }
+            //for (String key : b.keySet())
+            //{
+            //    Log.v(LOG_TAG, key);
+            //}
             if (action.equals(ACTION_ENUMERATEDLIST))
             {
                 //  6.0 API Enumerate Scanners
@@ -569,6 +692,40 @@ public class MainActivity extends AppCompatActivity {
             }
             else if (action.equals(ACTION_RESULT_DATAWEDGE_FROM_6_2))
             {
+                //  Process any result codes
+                TextView resultsUi = (TextView)findViewById(R.id.txtIntentResultCode);
+                if (intent.hasExtra(EXTRA_RESULT))
+                {
+                    if (intent.hasExtra(EXTRA_COMMAND))
+                    {
+                        String result = intent.getStringExtra(EXTRA_RESULT);
+                        String command = intent.getStringExtra(EXTRA_COMMAND);
+                        String info = "";
+                        if (intent.hasExtra(EXTRA_RESULT_INFO))
+                        {
+                            Bundle result_info = intent.getBundleExtra(EXTRA_RESULT_INFO);
+                            String[] result_code = result_info.getStringArray("RESULT_CODE");
+                            if (result_code != null)
+                                info = " - " + result_code[0];
+                        }
+                        switch(command)
+                        {
+                            case EXTRA_SET_DISABLED_APP_LIST:
+                                resultsUi.setText("Set Disabled App List: " + result);
+                                //  Because of how I set it up, this command will also have a
+                                //  command identifier (SET_DISABLED_APP_LIST_UI) but it is not used here.
+                                break;
+                            default:
+                                resultsUi.setText(command + ": " + result + info);
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                    resultsUi.setText("No Result associated with this intent");
+                }
+
                 if (intent.hasExtra(EXTRA_RESULT_GET_ACTIVE_PROFILE))
                 {
                     //  6.2 API to GetActiveProfile
@@ -640,6 +797,7 @@ public class MainActivity extends AppCompatActivity {
                     //  SCANNER_NAME
                     //  SCANNER_INDEX
                     String[] scanner_list = new String[scanner_list_arraylist.size()];
+                    String[] scanner_list_with_index = new String[scanner_list_arraylist.size()];
                     String userFriendlyScanners = "";
                     for (int i = 0; i < scanner_list_arraylist.size(); i++)
                     {
@@ -647,6 +805,7 @@ public class MainActivity extends AppCompatActivity {
                         //  Should really store this and pass it during SetConfig.  I just assume the indices are contiguous which is probably not too smart.
                         Integer scannerIndex = (Integer)((Bundle)scanner_list_arraylist.get(i)).get("SCANNER_INDEX");
                         scanner_list[i] = scannerName;
+                        scanner_list_with_index[i] = scannerName + " [" + scannerIndex.intValue() + "]";
                         userFriendlyScanners += "{" + scannerName + "} ";
                     }
 
@@ -656,6 +815,14 @@ public class MainActivity extends AppCompatActivity {
                             android.R.layout.simple_spinner_item, scanner_list);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerScannerForSetConfig.setAdapter(adapter);
+
+                    //  And update the UI for the Switch Scanners selection
+                    Spinner spinnerSwitchScanner = (Spinner) findViewById(R.id.spinnerSwitchScanner);
+                    ArrayAdapter<String> adapter_with_index = new ArrayAdapter<String>(getBaseContext(),
+                            android.R.layout.simple_spinner_item, scanner_list_with_index);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerSwitchScanner.setAdapter(adapter_with_index);
+
                     Log.i(LOG_TAG, "Scanners on device: " + userFriendlyScanners);
                 }
                 else if(intent.hasExtra(EXTRA_RESULT_GET_DATAWEDGE_STATUS))
@@ -663,6 +830,43 @@ public class MainActivity extends AppCompatActivity {
                     String datawedgeStatus = intent.getStringExtra(EXTRA_RESULT_GET_DATAWEDGE_STATUS);
                     Log.i(LOG_TAG, "Datawedge status is: " + datawedgeStatus);
                     Toast.makeText(getApplicationContext(), "Datawedge status is: " + datawedgeStatus, Toast.LENGTH_LONG).show();
+                }
+                else if (intent.hasExtra(EXTRA_RESULT_GET_DISABLED_APP_LIST))
+                {
+                    ArrayList<Bundle> disabledAppList  = new ArrayList<>();
+                    disabledAppList = intent.getParcelableArrayListExtra(EXTRA_RESULT_GET_DISABLED_APP_LIST);
+                    TextView txtDisabledAppList = (TextView)findViewById(R.id.txtReceivedDisabledAppList);
+                    if (disabledAppList == null || disabledAppList.size() == 0)
+                        txtDisabledAppList.setText("No disabled apps");
+                    else
+                    {
+                        String disabledApps = "";
+                        for (Bundle bundle:disabledAppList)
+                        {
+                            String packageName = bundle.getString("PACKAGE_NAME");
+                            ArrayList<String> activityList = new ArrayList<>();
+                            activityList = bundle.getStringArrayList("ACTIVITY_LIST");
+                            for(String activityName : activityList)
+                            {
+                                disabledApps += packageName + '\n' + "[" + activityName + "]" + '\n';
+                            }
+                        }
+                        txtDisabledAppList.setText(disabledApps);
+                    }
+                }
+                else if (intent.hasExtra(EXTRA_RESULT_GET_CONFIG))
+                {
+                    Bundle result = intent.getBundleExtra(EXTRA_RESULT_GET_CONFIG);
+                    ArrayList<Bundle> pluginConfig = result.getParcelableArrayList("PLUGIN_CONFIG");
+                    //  In the call to Get_Config we only requested the barcode plugin config (which will be index 0)
+                    Bundle barcodeProps = pluginConfig.get(0).getBundle("PARAM_LIST");
+                    String ean8Enabled = barcodeProps.getString("decoder_ean8");
+                    String ean13Enabled = barcodeProps.getString("decoder_ean13");
+                    String upcaEnabled = barcodeProps.getString("decoder_upca");
+                    TextView txtGetConfigOutput = (TextView) findViewById(R.id.txtReceivedConfiguration);
+                    txtGetConfigOutput.setText("EAN 8: " + ean8Enabled +
+                        '\n' + "EAN13: " + ean13Enabled +
+                        '\n' + "UPCA: " + upcaEnabled);
                 }
             }
             else if (action.equals(ACTION_RESULT_NOTIFICATION))
@@ -698,6 +902,8 @@ public class MainActivity extends AppCompatActivity {
         Intent dwIntent = new Intent();
         dwIntent.setAction(action);
         dwIntent.putExtra(extraKey, extraValue);
+        if (bRequestSendResult)
+            dwIntent.putExtra(EXTRA_SEND_RESULT, "true");
         this.sendBroadcast(dwIntent);
     }
 
@@ -706,6 +912,8 @@ public class MainActivity extends AppCompatActivity {
         Intent dwIntent = new Intent();
         dwIntent.setAction(action);
         dwIntent.putExtra(extraKey, extraValues);
+        if (bRequestSendResult)
+            dwIntent.putExtra(EXTRA_SEND_RESULT, "true");
         this.sendBroadcast(dwIntent);
     }
 
@@ -714,6 +922,8 @@ public class MainActivity extends AppCompatActivity {
         Intent dwIntent = new Intent();
         dwIntent.setAction(action);
         dwIntent.putExtra(extraKey, extraValue);
+        if (bRequestSendResult)
+            dwIntent.putExtra(EXTRA_SEND_RESULT, "true");
         this.sendBroadcast(dwIntent);
     }
 
@@ -722,6 +932,19 @@ public class MainActivity extends AppCompatActivity {
         Intent dwIntent = new Intent();
         dwIntent.setAction(action);
         dwIntent.putExtra(extraKey, extras);
+        if (bRequestSendResult)
+            dwIntent.putExtra(EXTRA_SEND_RESULT, "true");
+        this.sendBroadcast(dwIntent);
+    }
+
+    private void sendDataWedgeIntentWithExtra(String action, String extraKey, Bundle extras, String commandIdentifier)
+    {
+        //  Providing a command identifier implies a result is expected
+        Intent dwIntent = new Intent();
+        dwIntent.setAction(action);
+        dwIntent.putExtra(extraKey, extras);
+        dwIntent.putExtra(EXTRA_SEND_RESULT, "true");
+        dwIntent.putExtra(EXTRA_COMMAND_IDENTIFIER, commandIdentifier);
         this.sendBroadcast(dwIntent);
     }
 
@@ -729,6 +952,8 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent dwIntent = new Intent();
         dwIntent.setAction(action);
+        if (bRequestSendResult)
+            dwIntent.putExtra(EXTRA_SEND_RESULT, "true");
         this.sendBroadcast(dwIntent);
     }
 
@@ -789,8 +1014,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void enableUiFor65()
     {
-        //TextView txtHeading65Description = (TextView) findViewById(R.id.txtHeading65Description);
-        //txtHeading65Description.setText("These will work on any Zebra device running DataWedge 6.5 or higher");
+        bRequestSendResult = true;
+        TextView txtHeading65Description = (TextView) findViewById(R.id.txtHeading65Description);
+        txtHeading65Description.setText("These will work on any Zebra device running DataWedge 6.5 or higher");
+        TextView txtIntentResultCode = (TextView) findViewById(R.id.txtIntentResultCode);
+        txtIntentResultCode.setText("Results from the supported APIs will appear here");
 
+        Button btnGetConfig = (Button) findViewById(R.id.btnGetConfig);
+        btnGetConfig.setEnabled(true);
+        Button btnGetDisabledAppList = (Button) findViewById(R.id.btnGetDisabledAppList);
+        btnGetDisabledAppList.setEnabled(true);
+        Button btnSetDisabledAppList = (Button) findViewById(R.id.btnSetDisabledAppList);
+        btnSetDisabledAppList.setEnabled(true);
+        Button btnSwitchScanner = (Button) findViewById(R.id.btnSwitchScanner);
+        btnSwitchScanner.setEnabled(true);
+        Button btnSwitchScannerParams = (Button) findViewById(R.id.btnSwitchScannerParams);
+        btnSwitchScannerParams.setEnabled(true);
     }
 }
