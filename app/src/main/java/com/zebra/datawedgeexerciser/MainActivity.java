@@ -83,6 +83,11 @@ public class MainActivity extends AppCompatActivity {
     private static final String EXTRA_KEY_VALUE_NOTIFICATION_STATUS = "STATUS";
     private static final String EXTRA_KEY_VALUE_NOTIFICATION_PROFILE_NAME = "PROFILE_NAME";
 
+    //  6.4 API and up Extras sent to Datawedge
+    private static final String EXTRA_GET_DATAWEDGE_STATUS = "com.symbol.datawedge.api.GET_DATAWEDGE_STATUS";
+    //  6.4 API and up Parameter keys and values associated with extras received from Datawedge
+    private static final String EXTRA_RESULT_GET_DATAWEDGE_STATUS = "com.symbol.datawedge.api.RESULT_GET_DATAWEDGE_STATUS";
+
     //  private variables not related to the intent API
     private String mActiveProfile = "";
     private static final String EXTRA_PROFILE_NAME = "DW API Exerciser Profile";
@@ -243,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
 
         //  RegisterForNotification / UnregisterForNotification(6.3 API)
         final Button btnRegisterUnregisterForNotifications = (Button) findViewById(R.id.btnRegisterUnregisterNotifications63);
-        final CheckBox checkRegisterForNotifications = (CheckBox) findViewById(R.id.checkRegisterUnregisterNotifications);
+        final CheckBox checkRegisterForNotifications = (CheckBox) findViewById(R.id.checkRegisterUnregisterScannerNotifications);
         btnRegisterUnregisterForNotifications.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Bundle extras = new Bundle();
@@ -310,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
                 boolean checkValue = checkEnableCommonDecoders.isChecked();
                 Spinner spinnerScannerForSetConfig = (Spinner) findViewById(R.id.spinnerScannerForSetConfig);
                 int selectedScanner = spinnerScannerForSetConfig.getSelectedItemPosition();
-                String currentDeviceId = "" + selectedScanner;
+                String currentDeviceId = "" + selectedScanner;  //  Should really get this from enumerate_scanners but I just assume a contiguous ID is assigned
                 String decoderValue = "false";
                 String status = "disabled";
                 if (checkValue)
@@ -339,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
                 appConfig.putStringArray("ACTIVITY_LIST", new String[]{"*"});
                 profileConfig.putParcelableArray("APP_LIST", new Bundle[]{appConfig});
                 sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_SET_CONFIG, profileConfig);
-                Toast.makeText(getApplicationContext(), "EAN8, EAN13 and UPCA are now " + status + " in profile " + EXTRA_PROFILE_NAME, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "EAN8, EAN13 and UPCA are now " + status + " in profile " + mActiveProfile, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -412,6 +417,51 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //  Set Config (6.4 API)
+        Button btnSetConfig64 = (Button) findViewById(R.id.btnSetConfig64);
+        btnSetConfig64.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final CheckBox checkEnableCommonDecoders64 = (CheckBox) findViewById(R.id.checkSetConfig64EnableCommonDecoders);
+                boolean checkValue = checkEnableCommonDecoders64.isChecked();
+                String decoderValue = "false";
+                String status = "disabled";
+                if (checkValue)
+                {
+                    decoderValue = "true";
+                    status = "enabled";
+                }
+                //  Note, another example of SetConfig can be found under the CreateProfile test
+                Bundle profileConfig = new Bundle();
+                profileConfig.putString("PROFILE_NAME", mActiveProfile);
+                profileConfig.putString("PROFILE_ENABLED", "true");
+                profileConfig.putString("CONFIG_MODE", "UPDATE");
+                Bundle barcodeConfig = new Bundle();
+                barcodeConfig.putString("PLUGIN_NAME", "BARCODE");
+                barcodeConfig.putString("RESET_CONFIG", "true");
+                Bundle barcodeProps = new Bundle();
+                //barcodeProps.putString("current-device-id", currentDeviceId);  //  current-device-id is DW 6.3 only, replaced by scanner_selection
+                barcodeProps.putString("scanner_selection", "auto"); //  Could also specify a number here, the id returned from ENUMERATE_SCANNERS.
+                                                                     //  Do NOT use "Auto" here (with a capital 'A'), it must be lower case.
+                barcodeProps.putString("scanner_input_enabled", "true");
+                barcodeProps.putString("decoder_ean8", decoderValue);
+                barcodeProps.putString("decoder_ean13", decoderValue);
+                barcodeProps.putString("decoder_upca", decoderValue);
+                barcodeConfig.putBundle("PARAM_LIST", barcodeProps);
+                profileConfig.putBundle("PLUGIN_CONFIG", barcodeConfig);
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_SET_CONFIG, profileConfig);
+                Toast.makeText(getApplicationContext(), "EAN8, EAN13 and UPCA are now " + status + " in profile " + mActiveProfile, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        //  GetDatawedgeStatus (6.4 API)
+        final Button btnGetDatawedgeStatus = (Button) findViewById(R.id.btnGetDatawedgeStatus);
+        btnGetDatawedgeStatus.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_GET_DATAWEDGE_STATUS, EXTRA_EMPTY);
+            }
+        });
+
+
         // Create a filter for the broadcast intent
         //  Not ideal to put this here but we want to receive broadcast intents from the ZXing activity
         IntentFilter filter = new IntentFilter();
@@ -424,6 +474,7 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(getResources().getString(R.string.activity_action_from_service));
         registerReceiver(myBroadcastReceiver, filter);
 
+        sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_GET_VERSION_INFO, EXTRA_EMPTY);
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -479,10 +530,10 @@ public class MainActivity extends AppCompatActivity {
             String action = intent.getAction();
             Bundle b = intent.getExtras();
             //  This is useful for debugging to verify the format of received intents from DataWedge
-            //for (String key : b.keySet())
-            //{
-            //    Log.v(LOG_TAG, key);
-            //}
+            for (String key : b.keySet())
+            {
+                Log.v(LOG_TAG, key);
+            }
             if (action.equals(ACTION_ENUMERATEDLIST))
             {
                 //  6.0 API Enumerate Scanners
@@ -526,6 +577,8 @@ public class MainActivity extends AppCompatActivity {
                     txtActiveProfile.setText(activeProfile);
                     TextView txtActiveProfile63 = (TextView) findViewById(R.id.txtActiveProfile63);
                     txtActiveProfile63.setText("Act on Profile: " + activeProfile);
+                    TextView txtSetConfig64ActiveProfile = (TextView) findViewById(R.id.txtSetConfig64ActiveProfile);
+                    txtSetConfig64ActiveProfile.setText("Act on Profile: " + activeProfile);
                     mActiveProfile = activeProfile;
                 }
                 else if (intent.hasExtra(EXTRA_RESULT_GET_PROFILE_LIST))
@@ -571,6 +624,12 @@ public class MainActivity extends AppCompatActivity {
                     TextView txtReceivedVersions = (TextView) findViewById(R.id.txtReceivedVersions);
                     txtReceivedVersions.setText(userReadableVersion);
                     Log.i(LOG_TAG, "DataWedge Version info: " + userReadableVersion);
+                    if (DWVersion.compareTo("6.3.0") >= 1)
+                        enableUiFor63();
+                    if (DWVersion.compareTo("6.4.0") >= 1)
+                        enableUiFor64();
+                    if (DWVersion.compareTo("6.5.0") >= 1)
+                        enableUiFor65();
                 }
                 else if (intent.hasExtra(EXTRA_RESULT_ENUMERATE_SCANNERS))
                 {
@@ -598,11 +657,12 @@ public class MainActivity extends AppCompatActivity {
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerScannerForSetConfig.setAdapter(adapter);
                     Log.i(LOG_TAG, "Scanners on device: " + userFriendlyScanners);
-
-                    //  We trigger this callback in onResume - use this to determine that this device supports the 6.3 APIs
-                    TextView txtHeading63Description = (TextView) findViewById(R.id.txtHeading63Description);
-                    txtHeading63Description.setText("These will work on any Zebra device running DataWedge 6.3 or higher");
-                    enableUiFor63();
+                }
+                else if(intent.hasExtra(EXTRA_RESULT_GET_DATAWEDGE_STATUS))
+                {
+                    String datawedgeStatus = intent.getStringExtra(EXTRA_RESULT_GET_DATAWEDGE_STATUS);
+                    Log.i(LOG_TAG, "Datawedge status is: " + datawedgeStatus);
+                    Toast.makeText(getApplicationContext(), "Datawedge status is: " + datawedgeStatus, Toast.LENGTH_LONG).show();
                 }
             }
             else if (action.equals(ACTION_RESULT_NOTIFICATION))
@@ -688,6 +748,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void enableUiFor63()
     {
+        TextView txtHeading63Description = (TextView) findViewById(R.id.txtHeading63Description);
+        txtHeading63Description.setText("These will work on any Zebra device running DataWedge 6.3 or higher");
+
         //  Enable the UI elements which are specific to the DataWedge 6.3 UI
         Button btnGetVersionInfo = (Button) findViewById(R.id.btnGetVersionInfo63);
         btnGetVersionInfo.setEnabled(true);
@@ -711,5 +774,23 @@ public class MainActivity extends AppCompatActivity {
         btnResetDefaultProfile.setEnabled(true);
         Button btnSwitchToProfile = (Button) findViewById(R.id.btnSwitchToProfile63);
         btnSwitchToProfile.setEnabled(true);
+    }
+
+    private void enableUiFor64()
+    {
+        TextView txtHeading64Description = (TextView) findViewById(R.id.txtHeading64Description);
+        txtHeading64Description.setText("These will work on any Zebra device running DataWedge 6.4 or higher");
+
+        Button btnSetConfig64 = (Button) findViewById(R.id.btnSetConfig64);
+        btnSetConfig64.setEnabled(true);
+        Button btnGetDatawedgeStatus = (Button) findViewById(R.id.btnGetDatawedgeStatus);
+        btnGetDatawedgeStatus.setEnabled(true);
+    }
+
+    private void enableUiFor65()
+    {
+        //TextView txtHeading65Description = (TextView) findViewById(R.id.txtHeading65Description);
+        //txtHeading65Description.setText("These will work on any Zebra device running DataWedge 6.5 or higher");
+
     }
 }

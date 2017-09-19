@@ -706,9 +706,9 @@
                         <CheckBox
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/checkRegisterUnregisterNotifications"
+                            android:id="@+id/checkRegisterUnregisterScannerNotifications"
                             android:layout_gravity="center_vertical|right"
-                            android:text="Register for Notifications?"
+                            android:text="Scanner Notifications?"
                             android:checked="true"/>
 
                     </LinearLayout>
@@ -1155,6 +1155,178 @@
 
 
                 </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <!--  6.4 APIs -->
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="DataWedge 6.4 APIs"
+                            android:id="@+id/txtHeading6.4" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="YOUR DEVICE DOES NOT SUPPORT 6.4 APIS"
+                            android:id="@+id/txtHeading64Description" />
+
+                    </LinearLayout>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Set Config (auto Scanner)"
+                            android:id="@+id/txtSetConfig64Title" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Act on Profile: NOT SUPPORTED"
+                            android:id="@+id/txtSetConfig64ActiveProfile" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Select Scanner (auto)"
+                            android:id="@+id/txtSetConfig64SelectScanner" />
+
+                        <CheckBox
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/checkSetConfig64EnableCommonDecoders"
+                            android:layout_gravity="center_vertical|right"
+                            android:text="Enable common decoders?"
+                            android:checked="true"/>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnSetConfig64"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:layout_gravity="center"
+                        android:enabled="false"
+                        />
+
+                </TableRow>
+
+                <View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" />
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Get Datawedge Status"
+                            android:id="@+id/txtGetDatawedgeStatus" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Send"
+                        android:id="@+id/btnGetDatawedgeStatus"
+                        android:background="@color/zebraBlue"
+                        android:textColor="@color/zebraWhite"
+                        android:paddingRight="10dp"
+                        android:enabled="false"
+                        />
+
+                </TableRow>
+
+                <!--  New functionality in 6.5 APIs -->
+
+                <!--View
+                    android:layout_height="2dip"
+                    android:background="@color/zebraBlue" /-->
+
+                <!--  6.5 APIs -->
+
+                <!--TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="DataWedge 6.5 APIs"
+                            android:id="@+id/txtHeading6.5" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="YOUR DEVICE DOES NOT SUPPORT 6.5 APIS"
+                            android:id="@+id/txtHeading65Description" />
+
+                    </LinearLayout>
+
+                </TableRow-->
+
+                <!--  New functionality in 6.5 APIs -->
 
             </TableLayout>
         </LinearLayout>
