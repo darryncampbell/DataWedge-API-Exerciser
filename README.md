@@ -3,11 +3,27 @@
 *This application is provided without guarantee or warranty*
 =========================================================
 
-This application has been written to exercise the Zebra DataWedge Data Capture API (http://techdocs.zebra.com/datawedge/6-2/guide/api/).
+This application has been written to exercise the Zebra DataWedge Data Capture API (http://techdocs.zebra.com/datawedge/6-5/guide/api/).
 
 Zebra DataWedge is a 'zero code' solution to capture barcode, magnetic stripe and OCR data on Zebra devices.  DataWedge is a profile-based service running on Zebra mobile computers and offers an intent based API for user applications to interact and control.  The intent based API offers limited functionality for controlling the scanning and profile aspects of DataWedge
 
-Application to exercise the DataWedge Intent API for testing purposes
+# Application to exercise:
+* Receiving scan data via Intent
+* The Intent API (details below)
+
+## Device Configuration:
+1. Set up a Datawedge profile that will be in effect when this application is run [to get started easily, just modify 'Profile0 (default)].  
+2. Ensure Datawedge is enabled and the configured profile has enabled the 'Barcode input' plugin.  
+  * To test steps 1 & 2 launch any app and press the barcode trigger, you should see a beam.
+3. Configure the datawedge output plugin as follows.
+  * Intent Output: Enabled
+  * Intent action: com.zebra.dwapiexerciser.ACTION
+  * Intent category: leave blank
+  
+![Datawedge Configuration](https://raw.githubusercontent.com/darryncampbell/DataWedge-API-Exerciser/master/screenshots/datawedge_profile.png?raw=true)
+
+**Note: If you are using the 6.3 APIs you can use CreateProfile to automatically create, configure and associate an appropriate profile which will work and enable scanning via intents**
+
 ## APIs (6.x):
 * SoftScanTrigger - used to start, stop or toggle a software scanning trigger
 * ScannerInputPlugin - enable/disable the scanner Plug-in used by the active Profile
@@ -42,19 +58,6 @@ Application to exercise the DataWedge Intent API for testing purposes
 * Get / Set Disabled App List
 * Switch Scanner
 * Switch Scanner Params
-
-## Device Configuration:
-1. Set up a Datawedge profile that will be in effect when this application is run [to get started easily, just modify 'Profile0 (default)].  
-2. Ensure Datawedge is enabled and the configured profile has enabled the 'Barcode input' plugin.  
-  * To test steps 1 & 2 launch any app and press the barcode trigger, you should see a beam.
-3. Configure the datawedge output plugin as follows.
-  * Intent Output: Enabled
-  * Intent action: com.zebra.dwapiexerciser.ACTION
-  * Intent category: leave blank
-  
-![Datawedge Configuration](https://github.com/darryncampbell/DataWedge-API-Exerciser/blob/master/screenshots/datawedge_profile.png?raw=true)
-
-**Note: If you are using the 6.3 APIs you can use CreateProfile to automatically create, configure and associate an appropriate profile which will work and enable scanning via intents**
 
 ## Use:
 Hopefully the UI is self explanatory.  Returned barcode data is shown at the top of the view with some indication whether the intent (from Datawedge) was invoked through startActivity(), sendBroadcast() or startService().
