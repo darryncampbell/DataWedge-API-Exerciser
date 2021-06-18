@@ -283,10 +283,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         //  CreateProfile (6.3 API)
         final Button btnCreateProfile = (Button) findViewById(R.id.btnCreateProfile63);
         btnCreateProfile.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                //  DCC
+
+                ConfigureDWOutputs("false", "true");
+                return;
+
+
+                //  End DCC
+/*
                 String profileName = EXTRA_PROFILE_NAME;
                 sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_CREATE_PROFILE, profileName);
 
@@ -295,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
                 profileConfig.putString("PROFILE_NAME", EXTRA_PROFILE_NAME);
                 profileConfig.putString("PROFILE_ENABLED", "true"); //  Seems these are all strings
                 profileConfig.putString("CONFIG_MODE", "UPDATE");
+
                 Bundle barcodeConfig = new Bundle();
                 barcodeConfig.putString("PLUGIN_NAME", "BARCODE");
                 barcodeConfig.putString("RESET_CONFIG", "true"); //  This is the default but never hurts to specify
@@ -320,6 +330,7 @@ public class MainActivity extends AppCompatActivity {
                 sendDataWedgeIntentWithExtra(ACTION_DATAWEDGE_FROM_6_2, EXTRA_SET_CONFIG, profileConfig);
 
                 Toast.makeText(getApplicationContext(), "Profile create command sent.  Check DataWedge application UI", Toast.LENGTH_LONG).show();
+*/
             }
         });
 
@@ -591,6 +602,7 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(ACTION_ENUMERATEDLIST);           //  DW 6.x
         filter.addAction(ACTION_RESULT_DATAWEDGE_FROM_6_2);//  DW 6.2
         filter.addAction(ACTION_RESULT_NOTIFICATION);      //  DW 6.3 for notifications
+        filter.addAction("com.symbol.mxmf.intent.MX_FRAMEWORK_SERVICE_IS_READY");
         filter.addCategory(Intent.CATEGORY_DEFAULT);    //  NOTE: this IS REQUIRED for DW6.2 and up!
         //  Whilst we're here also register to receive broadcasts via DataWedge scanning
         filter.addAction(getResources().getString(R.string.activity_intent_filter_action));
@@ -653,10 +665,10 @@ public class MainActivity extends AppCompatActivity {
             String action = intent.getAction();
             Bundle b = intent.getExtras();
             //  This is useful for debugging to verify the format of received intents from DataWedge
-            //for (String key : b.keySet())
-            //{
-            //    Log.v(LOG_TAG, key);
-            //}
+            for (String key : b.keySet())
+            {
+                Log.v(LOG_TAG, key);
+            }
             if (action.equals(ACTION_ENUMERATEDLIST))
             {
                 //  6.0 API Enumerate Scanners
@@ -962,6 +974,14 @@ public class MainActivity extends AppCompatActivity {
         String decodedSource = initiatingIntent.getStringExtra(getResources().getString(R.string.datawedge_intent_key_source));
         String decodedData = initiatingIntent.getStringExtra(getResources().getString(R.string.datawedge_intent_key_data));
         String decodedLabelType = initiatingIntent.getStringExtra(getResources().getString(R.string.datawedge_intent_key_label_type));
+        //ArrayList<String> decodeData = initiatingIntent.getStringArrayListExtra("com.symbol.datawedge.decode_data");
+        ArrayList<byte[]> rawData = (ArrayList <byte[]>) initiatingIntent.getSerializableExtra("com.symbol.datawedge.decode_data");
+        if (rawData != null)
+        {
+            byte[] rawBytes = rawData.get(0);
+            for (int i = 0; i < rawBytes.length; i++)
+                Log.d(LOG_TAG, i + ": " + rawBytes[i]);
+        }
 
         final TextView lblScanSource = (TextView) findViewById(R.id.lblScanSource);
         final TextView lblScanData = (TextView) findViewById(R.id.lblScanData);
@@ -970,6 +990,35 @@ public class MainActivity extends AppCompatActivity {
         lblScanData.setText(decodedData);
         lblScanLabelType.setText(decodedLabelType);
     }
+
+    private void ConfigureDWOutputs(String isKeystrokeEnabled, String isIntentEnabled)
+    {
+        Bundle profileConfig = new Bundle();
+        profileConfig.putString("PROFILE_NAME", EXTRA_PROFILE_NAME);
+        profileConfig.putString("PROFILE_ENABLED", "true"); //  Seems these are all strings
+        profileConfig.putString("CONFIG_MODE", "UPDATE");
+
+        Bundle intentConfig = new Bundle();
+        intentConfig.putString("PLUGIN_NAME", "INTENT");
+        intentConfig.putString("RESET_CONFIG", "true");
+        Bundle intentProps = new Bundle();
+        intentProps.putString("intent_output_enabled", isIntentEnabled);
+        intentConfig.putBundle("PARAM_LIST", intentProps);
+        profileConfig.putBundle("PLUGIN_CONFIG", intentConfig);
+        sendDataWedgeIntentWithExtra("com.symbol.datawedge.api.ACTION", "com.symbol.datawedge.api.SET_CONFIG", profileConfig);
+
+        profileConfig.remove("PLUGIN_CONFIG");
+
+        Bundle keystrokeConfig = new Bundle();
+        keystrokeConfig.putString("PLUGIN_NAME", "KEYSTROKE");
+        keystrokeConfig.putString("RESET_CONFIG", "true");
+        Bundle keystrokeProps = new Bundle();
+        keystrokeProps.putString("keystroke_output_enabled", isKeystrokeEnabled);
+        keystrokeConfig.putBundle("PARAM_LIST", keystrokeProps);
+        profileConfig.putBundle("PLUGIN_CONFIG", keystrokeConfig);
+        sendDataWedgeIntentWithExtra("com.symbol.datawedge.api.ACTION", "com.symbol.datawedge.api.SET_CONFIG", profileConfig);
+    }
+
 
     private void enableUiFor63()
     {
